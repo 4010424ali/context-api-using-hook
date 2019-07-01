@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 
+import Form from './components/Form';
+import People from './components/People';
+import NewestPeople from './components/NewestPeople';
+
 function App() {
   const [people, setPeople] = useState([
     {
@@ -12,68 +16,17 @@ function App() {
       lastName: 'farooq'
     }
   ]);
-  const [person, setPerson] = useState({ firstName: '', lastName: '' });
-  const onChange = e => {
-    setPerson({ ...person, [e.target.name]: e.target.value });
+
+  const addPeople = person => {
+    setPeople([...people, person]);
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
-    if (person.firstName.trim() === '' || person.lastName.trim() === '') {
-      return;
-    }
-    const newPerosn = {
-      firstName: person.firstName.trim(),
-      lastName: person.lastName.trim()
-    };
-
-    setPeople([...people, newPerosn]);
-  };
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="row">
-        <div className="col">
-          <h2>Add Person</h2>
-          <hr />
-          <form onSubmit={onSubmit}>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                name="firstName"
-                placeholder="First Name"
-                value={person.firstName}
-                onChange={onChange}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                name="lastName"
-                placeholder="Last Name"
-                value={person.lastName}
-                onChange={onChange}
-              />
-            </div>
-            <button className="btn btn-success" type="submit">
-              Add Person
-            </button>
-          </form>
-        </div>
-        <div className="col">
-          <h2>
-            People:
-            <hr />
-            {people.map(p => (
-              <div key={Math.random() * 1000000000}>
-                <p>
-                  {p.firstName} {p.lastName}
-                </p>
-              </div>
-            ))}
-          </h2>
-        </div>
+        <Form addPeople={addPeople} />
+        <People people={people} />
+        <NewestPeople newPerson={people[people.length - 1]} />
       </div>
     </div>
   );
